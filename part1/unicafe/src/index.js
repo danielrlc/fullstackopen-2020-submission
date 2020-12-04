@@ -19,9 +19,16 @@ const App = () => {
         <button onClick={addBadVote}>bad</button>
       </div>
       <h2>Statistics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
+      <div>
+        <p>Good: {good}</p>
+        <p>Neutral: {neutral}</p>
+        <p>Bad: {bad}</p>
+      </div>
+      <div>
+        <p>All: {good + neutral + bad}</p>
+        <p>Average: {(good - bad) / (good + neutral + bad)}</p>
+        <p>{(good / (good + neutral + bad)) * 100}%</p>
+      </div>
     </>
   );
 };
