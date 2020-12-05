@@ -15,6 +15,10 @@ const App = ({ anecdotes }) => {
   const [votesRegister, setVotesRegister] = useState(
     new Array(anecdotes.length).fill(0),
   );
+  const [
+    anecdoteWithMostVotesPosition,
+    setAnecdoteWithMostVotesPosition,
+  ] = useState(0);
 
   const changeAnecdote = () =>
     setSelected(Math.floor(Math.random() * anecdotes.length));
@@ -27,15 +31,26 @@ const App = ({ anecdotes }) => {
         return item;
       }
     });
+
     setVotesRegister(updatedVotesRegister);
+
+    var maxValue = updatedVotesRegister.reduce(function (a, b) {
+      return Math.max(a, b);
+    });
+    var maxValuePosition = updatedVotesRegister.indexOf(maxValue);
+
+    setAnecdoteWithMostVotesPosition(maxValuePosition);
   };
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>has {votesRegister[selected]} votes</p>
       <button onClick={addVote}>Vote</button>
       <button onClick={changeAnecdote}>Change anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[anecdoteWithMostVotesPosition]}</p>
     </div>
   );
 };
