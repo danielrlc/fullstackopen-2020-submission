@@ -1,0 +1,23 @@
+note over browser:
+User creates new note and submits it
+end note
+
+note over browser:
+browser code prevents default handling of form submit
+end note
+
+note over browser:
+browser responds to form submit by adding note to 'notes' array and then displaying notes
+end note
+
+note over browser:
+browser then stringifies note details and sends them to server
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa {"content":"my new note","date":"2020-12-05T13:59:15.416Z"}
+
+note over server
+server adds the new note to its list of notes
+end note
+
+server-->browser: {"message":"note created"}
