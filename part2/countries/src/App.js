@@ -47,20 +47,24 @@ function App() {
           ))}
         {countriesToShow.length === 1 && (
           <>
-            <h2>{countriesToShow[0].name}</h2>
-            <p>Population: {countriesToShow[0].population}</p>
-            <p>Capital: {countriesToShow[0].capital}</p>
-            <h3>Languages</h3>
-            <ul>
-              {countriesToShow[0].languages.map((language) => (
-                <li>{language.name}</li>
-              ))}
-            </ul>
-            <img
-              className="flag-img"
-              src={countriesToShow[0].flag}
-              alt={`flag of ${countriesToShow[0].name}`}
-            />
+            {countriesToShow.map((country) => (
+              <div key={country.name}>
+                <h2>{country.name}</h2>
+                <p>Population: {country.population}</p>
+                <p>Capital: {country.capital}</p>
+                <h3>Languages</h3>
+                <ul>
+                  {country.languages.map((language) => (
+                    <li key={language.name}>{language.name}</li>
+                  ))}
+                </ul>
+                <img
+                  className="flag-img"
+                  src={country.flag}
+                  alt={`flag of ${country.name}`}
+                />
+              </div>
+            ))}
           </>
         )}
       </ul>
