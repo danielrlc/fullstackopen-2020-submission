@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import CountryInList from './components/CountryInList';
+import SingleCountry from './components/SingleCountry';
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -20,6 +22,7 @@ function App() {
               population: countryData.population,
               languages: countryData.languages,
               flag: countryData.flag,
+              id: countryData.alpha2Code,
             };
           }),
         ),
@@ -31,43 +34,21 @@ function App() {
     country.name.toLowerCase().includes(searchInput.toLowerCase()),
   );
 
-  console.log(countriesToShow);
-
   return (
     <div className="App">
       <span>Find countries: </span>
       <input type="text" value={searchInput} onChange={handleInputChange} />
-      <ul>
-        {countriesToShow.length > 10 &&
-          'Too many matches. Add more text to get fewer matches.'}
-        {countriesToShow.length <= 10 &&
-          countriesToShow.length > 1 &&
-          countriesToShow.map((country) => (
-            <li key={country.name}>{country.name}</li>
-          ))}
-        {countriesToShow.length === 1 && (
-          <>
-            {countriesToShow.map((country) => (
-              <div key={country.name}>
-                <h2>{country.name}</h2>
-                <p>Population: {country.population}</p>
-                <p>Capital: {country.capital}</p>
-                <h3>Languages</h3>
-                <ul>
-                  {country.languages.map((language) => (
-                    <li key={language.name}>{language.name}</li>
-                  ))}
-                </ul>
-                <img
-                  className="flag-img"
-                  src={country.flag}
-                  alt={`flag of ${country.name}`}
-                />
-              </div>
-            ))}
-          </>
-        )}
-      </ul>
+      {countriesToShow.length > 10 && (
+        <p>Too many matches. Add more text to get fewer matches.</p>
+      )}
+      {countriesToShow.length <= 10 &&
+        countriesToShow.length > 1 &&
+        countriesToShow.map((country) => (
+          <CountryInList country={country} key={country.name} />
+        ))}
+      {countriesToShow.length === 1 && (
+        <SingleCountry country={countriesToShow[0]} />
+      )}
     </div>
   );
 }
