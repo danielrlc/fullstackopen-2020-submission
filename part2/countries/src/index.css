@@ -17,3 +17,9 @@ code {
   width: 250px;
   height: 200px;
 }
+
+.weather-img {
+  margin-top: 30px;
+  width: 150px;
+  height: 150px;
+}

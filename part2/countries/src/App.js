@@ -4,8 +4,11 @@ import CountryInList from './components/CountryInList';
 import SingleCountry from './components/SingleCountry';
 
 function App() {
+  const apiKey = process.env.REACT_APP_API_KEY;
   const [countries, setCountries] = useState([]);
+  const [countriesToShow, setCountriesToShow] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [weather, setWeather] = useState({});
 
   const handleInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -30,9 +33,23 @@ function App() {
     [],
   );
 
-  const countriesToShow = countries.filter((country) =>
-    country.name.toLowerCase().includes(searchInput.toLowerCase()),
-  );
+  useEffect(() => {
+    const preppedCountriesToShow = countries.filter((country) =>
+      country.name.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+    setCountriesToShow(preppedCountriesToShow);
+  }, [searchInput, countries]);
+
+  useEffect(() => {
+    if (countriesToShow.length === 1) {
+      const country = countriesToShow[0];
+      axios
+        .get(
+          `http://api.weatherstack.com/current?access_key=${apiKey}&query=${country.capital}`,
+        )
+        .then((response) => setWeather(response.data));
+    }
+  }, [countriesToShow, apiKey]);
 
   return (
     <div className="App">
@@ -47,7 +64,7 @@ function App() {
           <CountryInList country={country} key={country.name} />
         ))}
       {countriesToShow.length === 1 && (
-        <SingleCountry country={countriesToShow[0]} />
+        <SingleCountry country={countriesToShow[0]} weather={weather} />
       )}
     </div>
   );
