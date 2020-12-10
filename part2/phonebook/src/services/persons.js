@@ -12,10 +12,22 @@ const createPerson = (newPerson) => {
 };
 
 const deletePerson = (personId) => {
-  const request = axios.delete(`${baseUrl}/${personId}`);
+  const url = `${baseUrl}/${personId}`;
+  const request = axios.delete(url);
   return request.then((response) => response.data);
 };
 
-const personService = { getAllPersons, createPerson, deletePerson };
+const changeNumber = (personId, changedPerson) => {
+  const url = `${baseUrl}/${personId}`;
+  const request = axios.put(url, changedPerson);
+  return request.then((response) => response.data);
+};
+
+const personService = {
+  getAllPersons,
+  createPerson,
+  deletePerson,
+  changeNumber,
+};
 
 export default personService;
