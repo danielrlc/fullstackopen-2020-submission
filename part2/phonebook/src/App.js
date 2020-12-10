@@ -31,7 +31,6 @@ const App = () => {
           number: newNumber,
           id: personFound.id,
         };
-        console.log('personToChange', personToChange); // This is working
         personService
           .changeNumber(personToChange.id, personToChange)
           .then((changedPerson) =>
