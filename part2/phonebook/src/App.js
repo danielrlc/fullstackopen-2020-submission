@@ -49,9 +49,14 @@ const App = () => {
     });
   }, []);
 
-  // const deletePerson = (personId) => () => {
-  //   axios.delete(`http://localhost:3001/persons/${personId}`);
-  // };
+  const deletePerson = (personId) => () => {
+    const personToDelete = persons.find((person) => person.id === personId);
+    if (window.confirm(`Delete ${personToDelete.name}`)) {
+      personService
+        .deletePerson(personId)
+        .then(setPersons(persons.filter((person) => person.id !== personId)));
+    }
+  };
 
   return (
     <div>
@@ -68,9 +73,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
-
-      {/* <button onClick={deletePerson(1)}>Delete person</button> */}
+      <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
     </div>
   );
 };
