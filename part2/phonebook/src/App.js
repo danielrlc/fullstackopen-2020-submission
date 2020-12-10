@@ -26,9 +26,15 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
       return;
     }
-    setPersons(persons.concat({ name: newName, number: newNumber }));
-    setNewName('');
-    setNewNumber('');
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+    };
+    axios.post('http://localhost:3001/persons', newPerson).then((response) => {
+      setPersons(persons.concat(response.data));
+      setNewName('');
+      setNewNumber('');
+    });
   };
 
   const personsToShow = personsAreFiltered
@@ -44,6 +50,10 @@ const App = () => {
         .then((response) => setPersons(response.data)),
     [],
   );
+
+  const deletePerson = (personId) => () => {
+    axios.delete(`http://localhost:3001/persons/${personId}`);
+  };
 
   return (
     <div>
@@ -61,6 +71,8 @@ const App = () => {
 
       <h2>Numbers</h2>
       <Persons personsToShow={personsToShow} />
+
+      <button onClick={deletePerson(1)}>Delete person</button>
     </div>
   );
 };
