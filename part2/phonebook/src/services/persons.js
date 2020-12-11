@@ -17,9 +17,9 @@ const deletePerson = (personId) => {
   return request.then((response) => response.data);
 };
 
-const changeNumber = (personId, changedPerson) => {
+const updatePerson = (personId, updatedPerson) => {
   const url = `${baseUrl}/${personId}`;
-  const request = axios.put(url, changedPerson);
+  const request = axios.put(url, updatedPerson);
   return request.then((response) => response.data);
 };
 
@@ -27,7 +27,7 @@ const personService = {
   getAllPersons,
   createPerson,
   deletePerson,
-  changeNumber,
+  updatePerson,
 };
 
 export default personService;

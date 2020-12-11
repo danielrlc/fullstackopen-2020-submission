@@ -3,6 +3,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personService from './services/persons';
+// import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
   const [personsAreFiltered, setPersonsAreFiltered] = useState(false);
+  // const [notificationMsg, setNotificationMsg] = useState('');
 
   const handleNameChange = (event) => setNewName(event.target.value);
   const handleNumberChange = (event) => setNewNumber(event.target.value);
@@ -20,29 +22,37 @@ const App = () => {
       : setPersonsAreFiltered(false);
   };
 
-  const addNewPerson = (event) => {
+  const checkPersonEntry = (event) => {
     event.preventDefault();
     if (persons.map((person) => person.name).includes(newName)) {
-      const personFound = persons.find((person) => person.name === newName);
-      const confirmMsg = `${personFound.name} is already added to phonebook, replace the old number with a new one?`;
+      const personToUpdate = persons.find((person) => person.name === newName);
+      const confirmMsg = `${personToUpdate.name} is already added to phonebook, replace the old number with a new one?`;
       if (window.confirm(confirmMsg)) {
-        const personToChange = {
-          name: newName,
-          number: newNumber,
-          id: personFound.id,
-        };
-        personService
-          .changeNumber(personToChange.id, personToChange)
-          .then((changedPerson) =>
-            setPersons(
-              persons.map((person) =>
-                person.id === changedPerson.id ? changedPerson : person,
-              ),
-            ),
-          );
+        updatePerson(personToUpdate.id);
       }
       return;
     }
+    addNewPerson();
+  };
+
+  const updatePerson = (personId) => {
+    const updatedPerson = {
+      name: newName,
+      number: newNumber,
+      id: personId,
+    };
+    personService
+      .updatePerson(personId, updatedPerson)
+      .then((updatedPerson) =>
+        setPersons(
+          persons.map((person) =>
+            person.id === updatedPerson.id ? updatedPerson : person,
+          ),
+        ),
+      );
+  };
+
+  const addNewPerson = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
@@ -82,11 +92,11 @@ const App = () => {
 
       <h2>Add new contact</h2>
       <PersonForm
-        addNewPerson={addNewPerson}
-        newName={newName}
+        checkPersonEntry={checkPersonEntry}
         handleNameChange={handleNameChange}
-        newNumber={newNumber}
         handleNumberChange={handleNumberChange}
+        newName={newName}
+        newNumber={newNumber}
       />
 
       <h2>Numbers</h2>
